@@ -9,7 +9,7 @@ pipeline {
     EC2_HOST = "ec2-3-111-245-91.ap-south-1.compute.amazonaws.com"
     EC2_USER = "ubuntu"
 }
-
+     stages{
         stage('Docker Build') {
             steps {
                 script{
