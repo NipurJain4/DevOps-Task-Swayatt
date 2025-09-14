@@ -25,11 +25,10 @@ Webhook  Build/Test  Push   GitOps   Deploy
 
 ## 🚀 Pipeline Stages
 
-1. **Test**: Run Jest unit tests
-2. **Build**: Create Docker image
-3. **Tag**: Tag image for ECR
-4. **Push**: Upload to AWS ECR
-5. **Deploy**: Update Helm chart, ArgoCD auto-syncs
+1. **Build**: Create Docker image
+2. **Tag**: Tag image for ECR
+3. **Push**: Upload to AWS ECR
+4. **Deploy**: Update Helm chart, ArgoCD auto-syncs
 
 ## 📋 Setup Instructions
 
@@ -48,13 +47,9 @@ Webhook  Build/Test  Push   GitOps   Deploy
 # Repository: https://github.com/NipurJain4/Jenkins_shared_liberary.git
 ```
 
-### 2. GitHub Webhook
-```
-Repository Settings → Webhooks → Add webhook
-Payload URL: http://your-jenkins-url/github-webhook/
-Content type: application/json
-Events: Push events
-```
+### 2. Manual Build Trigger
+- Builds are triggered manually from Jenkins UI
+- Navigate to Jenkins → Your Job → "Build Now"
 
 ### 3. ArgoCD Application
 ```yaml
