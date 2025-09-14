@@ -1,61 +1,114 @@
-# Logo Server
+# DevOps CI/CD Pipeline - Swayatt Logo Server
 
-A simple Express.js web server that serves the Swayatt logo image.
+A complete CI/CD pipeline implementation for a Node.js application using Jenkins, Docker, AWS ECR, ArgoCD, and Kubernetes.
+
+## 🏗️ Architecture
+
+![Architecture Diagram](docs/architecture.png)
+
+```
+GitHub → Jenkins → AWS ECR → ArgoCD → Kubernetes
+   ↓        ↓         ↓        ↓         ↓
+Webhook  Build/Test  Push   GitOps   Deploy
+```
+
+## 🛠️ Tech Stack
+
+- **Application**: Node.js + Express
+- **CI/CD**: Jenkins with shared libraries
+- **Containerization**: Docker
+- **Registry**: AWS ECR
+- **Orchestration**: Kubernetes
+- **Package Management**: Helm
+- **GitOps**: ArgoCD
+- **Version Control**: GitHub
+
+## 🚀 Pipeline Stages
+
+1. **Test**: Run Jest unit tests
+2. **Build**: Create Docker image
+3. **Tag**: Tag image for ECR
+4. **Push**: Upload to AWS ECR
+5. **Deploy**: Update Helm chart, ArgoCD auto-syncs
+
+## 📋 Setup Instructions
+
+### Prerequisites
+- Jenkins server with Docker and AWS CLI
+- Kubernetes cluster with ArgoCD
+- AWS ECR repository
+- GitHub repository with webhook
+
+### 1. Jenkins Configuration
+```bash
+# Required plugins: Pipeline, GitHub Integration, Docker Pipeline, AWS Steps
+# Configure shared library:
+# Manage Jenkins → Configure System → Global Pipeline Libraries
+# Name: sharedlib
+# Repository: https://github.com/NipurJain4/Jenkins_shared_liberary.git
+```
+
+### 2. GitHub Webhook
+```
+Repository Settings → Webhooks → Add webhook
+Payload URL: http://your-jenkins-url/github-webhook/
+Content type: application/json
+Events: Push events
+```
+
+### 3. ArgoCD Application
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: swayatt-logo-server
+spec:
+  source:
+    repoURL: https://github.com/NipurJain4/DevOps-Task-Swayatt-helm_chart.git
+    path: .
+    targetRevision: main
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+```
+
+## 🧪 Testing
+
+```bash
+# Run tests locally
+npm install
+npm test
+
+# Run application
+npm start
+# Access at http://localhost:3000
+```
+
+## 📁 Repository Structure
+
+```
+├── app.js              # Main application
+├── package.json        # Dependencies and scripts
+├── Dockerfile          # Container definition
+├── Jenkinsfile         # CI/CD pipeline
+├── test/               # Unit tests
+├── docs/               # Documentation and diagrams
+├── deployment-proof/   # Deployment screenshots
+└── WRITEUP.md         # Technical implementation details
+```
+
+## 🔗 Related Repositories
+
+- **Shared Library**: [Jenkins_shared_liberary](https://github.com/NipurJain4/Jenkins_shared_liberary.git)
+- **Helm Chart**: [DevOps-Task-Swayatt-helm_chart](https://github.com/NipurJain4/DevOps-Task-Swayatt-helm_chart.git)
+
+## 📊 Monitoring
+
+- Jenkins build logs and status
+- ArgoCD application health and sync status  
+- Kubernetes pod logs: `kubectl logs -f deployment/swayatt-logo-server`
+- AWS ECR repository for image versions
 
 ## What is this app?
 
 This is a lightweight Node.js application built with Express.js that serves a single logo image (`logoswayatt.png`) when accessed through a web browser. When you visit the root URL, the server responds by displaying the Swayatt logo.
-
-## Prerequisites
-
-- Node.js (version 12 or higher)
-- npm (Node Package Manager)
-
-## Installation
-
-1. Clone or download this repository
-2. Navigate to the project directory:
-   ```bash
-   cd "devops task"
-   ```
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-## How to Start the App
-
-Run the following command:
-```bash
-npm start
-```
-
-The server will start and display:
-```
-Server running on http://localhost:3000
-```
-
-## Usage
-
-Once the server is running, open your web browser and navigate to:
-```
-http://localhost:3000
-```
-
-You will see the Swayatt logo displayed in your browser.
-
-## Project Structure
-
-```
-├── app.js              # Main server file
-├── package.json        # Project dependencies and scripts
-├── logoswayatt.png     # Logo image file
-└── README.md          # This file
-```
-
-## Technical Details
-
-- **Framework**: Express.js
-- **Port**: 3000
-- **Endpoint**: GET `/` - serves the logo image
-- **File served**: `logoswayatt.png`
