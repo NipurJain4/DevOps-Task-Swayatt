@@ -8,6 +8,7 @@ pipeline {
     ECR_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_NAME}"
     EC2_HOST = "ec2-3-111-245-91.ap-south-1.compute.amazonaws.com"
     EC2_USER = "ubuntu"
+    HELM_URL = "https://github.com/NipurJain4/DevOps-Task-Swayatt-helm_chart.git"
 }
      stages{
         stage('Docker Build') {
@@ -39,16 +40,16 @@ pipeline {
                }
             }
         }
-    }
-    stage('Update Helm Chart') {
-            steps {
-                script {
-                    helm_deploy(
-                        helmRepoUrl: 'https://github.com/NipurJain4/DevOps-Task-Swayatt-helm_chart.git'
-                    )
+        stage('Update Helm Chart') {
+                steps {
+                    script {
+                        helm_deploy(
+                            HELM_URL
+                        )
+                    }
                 }
             }
-        }
+     }
     post {
         success {
             echo "✅ Image is pushed to ECR Successfully"
