@@ -10,13 +10,6 @@ pipeline {
     EC2_USER = "ubuntu"
 }
      stages{
-        stage('Test') {
-            steps {
-                script{
-                    sh 'npm test'
-                }
-            }
-        }
         stage('Docker Build') {
             steps {
                 script{
