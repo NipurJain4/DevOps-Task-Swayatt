@@ -1,92 +1,66 @@
-# DevOps CI/CD Pipeline - Swayatt Logo Server
+# Swayatt Logo Server - DevOps Pipeline
 
-A complete CI/CD pipeline implementation for a Node.js application using Jenkins, Docker, AWS ECR, ArgoCD, and Kubernetes.
+A Node.js application that serves the Swayatt company logo, deployed using a complete CI/CD pipeline with Jenkins, Docker, and Kubernetes.
 
-## 🏗️ Architecture
+![Architecture](docs/architecture.png)
 
-![Architecture Diagram](docs/architecture.png)
+## What does this do?
+
+Simple Express.js server that displays our company logo when you visit it. Built this as part of a DevOps assignment to demonstrate CI/CD best practices.
+
+## The Pipeline
 
 ```
 GitHub → Jenkins → AWS ECR → ArgoCD → Kubernetes
-   ↓        ↓         ↓        ↓         ↓
-Webhook  Build/Push  Push   GitOps   Deploy
 ```
 
-## ☁️ Infrastructure Options
+When I push code to GitHub, Jenkins automatically:
+1. Builds a Docker image
+2. Pushes it to AWS ECR
+3. Updates the Helm chart
+4. ArgoCD deploys to Kubernetes
 
-### Current Setup (Cost-Effective)
-- **Existing Infrastructure**: Uses pre-configured Jenkins server and Kubernetes cluster
-- **Monthly Cost**: ~$0 (using existing resources)
+## Tech Stack
 
-### Production Setup with Terraform (Recommended)
-For a complete production environment, use our Terraform infrastructure:
+- **App**: Node.js + Express (keeps it simple)
+- **CI/CD**: Jenkins with custom shared libraries
+- **Containers**: Docker + AWS ECR
+- **Deployment**: Kubernetes + Helm + ArgoCD
+- **Infrastructure**: Can be created with Terraform (see below)
 
-**🏗️ Infrastructure Components:**
-- **Jenkins Master**: EC2 t3.medium instance with pre-installed tools
-- **EKS Cluster**: Managed Kubernetes with 2 worker nodes
-- **ECR Repository**: Private container registry
-- **VPC & Networking**: Custom VPC with public/private subnets
-- **IAM Roles**: Proper permissions for Jenkins-EKS integration
+## Running Locally
 
-**💰 Cost Breakdown:**
-- EKS Cluster: ~$73/month
-- EC2 Jenkins (t3.medium): ~$30/month  
-- Worker Nodes (t3.medium x2): ~$60/month
-- NAT Gateway: ~$45/month
-- ECR Storage: ~$5/month
-- **Total Estimated Cost**: ~$213/month
-
-**🚀 Quick Deploy:**
 ```bash
-git clone https://github.com/NipurJain4/DevOps-Task-Swayatt-terraform.git
-cd DevOps-Task-Swayatt-terraform
-terraform init && terraform apply
+npm install
+npm start
+# Visit http://localhost:3000
 ```
 
-This will create a complete production-ready DevOps infrastructure in AWS.
+## Infrastructure Options
 
-## 🛠️ Tech Stack
+### Current Setup
+Using existing Jenkins and K8s cluster (free for development)
 
-- **Application**: Node.js + Express
-- **CI/CD**: Jenkins with shared libraries
-- **Containerization**: Docker
-- **Registry**: AWS ECR
-- **Orchestration**: Kubernetes
-- **Package Management**: Helm
-- **GitOps**: ArgoCD
-- **Version Control**: GitHub
+### Production with AWS EKS
+If you want to deploy this properly on AWS, I've created Terraform scripts that set up everything:
 
-## 🚀 Pipeline Stages
+- Jenkins server on EC2 (with Docker, kubectl, etc.)
+- EKS cluster with worker nodes  
+- ECR repository for images
+- All the IAM roles and networking
 
-1. **Build**: Create Docker image
-2. **Tag**: Tag image for ECR
-3. **Push**: Upload to AWS ECR
-4. **Deploy**: Update Helm chart, ArgoCD auto-syncs
+**Cost**: Around $200-250/month for the full setup
 
-## 📋 Setup Instructions
+Check out the [Terraform repo](https://github.com/NipurJain4/DevOps-Task-Swayatt-terraform.git) - just run `terraform apply` and you're good to go.
 
-### Prerequisites
-- Jenkins server with Docker and AWS CLI
-- Kubernetes cluster with ArgoCD
-- AWS ECR repository
-- GitHub repository with webhook
+## How to Deploy
 
-**💡 For EKS Setup:** Use our [Terraform repository](https://github.com/NipurJain4/DevOps-Task-Swayatt-terraform.git) to create complete AWS infrastructure including Jenkins EC2, EKS cluster, and ECR repository.
+### Jenkins Setup
+1. Install these plugins: Pipeline, GitHub Integration, Docker Pipeline
+2. Add the shared library from [here](https://github.com/NipurJain4/Jenkins_shared_liberary.git)
+3. Create a new pipeline job pointing to this repo
 
-### 1. Jenkins Configuration
-```bash
-# Required plugins: Pipeline, GitHub Integration, Docker Pipeline, AWS Steps
-# Configure shared library:
-# Manage Jenkins → Configure System → Global Pipeline Libraries
-# Name: sharedlib
-# Repository: https://github.com/NipurJain4/Jenkins_shared_liberary.git
-```
-
-### 2. Manual Build Trigger
-- Builds are triggered manually from Jenkins UI
-- Navigate to Jenkins → Your Job → "Build Now"
-
-### 3. ArgoCD Application
+### ArgoCD Setup
 ```yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -96,51 +70,46 @@ spec:
   source:
     repoURL: https://github.com/NipurJain4/DevOps-Task-Swayatt-helm_chart.git
     path: .
-    targetRevision: main
   destination:
     server: https://kubernetes.default.svc
     namespace: default
 ```
 
-## 🧪 Running the Application
-
-```bash
-# Install dependencies
-npm install
-
-# Run application
-npm start
-# Access at http://localhost:3000
-```
-
-## 📁 Repository Structure
+## Project Structure
 
 ```
-├── app.js              # Main application
-├── package.json        # Dependencies and scripts
-├── Dockerfile          # Container definition
-├── Jenkinsfile         # CI/CD pipeline
-├── docs/               # Documentation and diagrams
-├── deployment-proof/   # Deployment screenshots
-└── WRITEUP.md         # Technical implementation details
+├── app.js              # The main server file
+├── package.json        # Node.js dependencies
+├── Dockerfile          # How to containerize the app
+├── Jenkinsfile         # CI/CD pipeline definition
+├── docs/               # Architecture diagram
+├── deployment-proof/   # Screenshots of working deployment
+└── WRITEUP.md         # Technical details and challenges
 ```
 
-## 🔗 Related Repositories
+## Related Repos
 
-- **🏗️ Infrastructure (Terraform)**: [DevOps-Task-Swayatt-terraform](https://github.com/NipurJain4/DevOps-Task-Swayatt-terraform.git)
-  - Complete AWS infrastructure setup (EKS + ECR + Jenkins EC2)
-  - One-command deployment with Terraform
-  - Production-ready with proper IAM roles and networking
-- **📚 Shared Library**: [Jenkins_shared_liberary](https://github.com/NipurJain4/Jenkins_shared_liberary.git)
-- **📦 Helm Chart**: [DevOps-Task-Swayatt-helm_chart](https://github.com/NipurJain4/DevOps-Task-Swayatt-helm_chart.git)
+- **Infrastructure**: [Terraform scripts](https://github.com/NipurJain4/DevOps-Task-Swayatt-terraform.git) for AWS setup
+- **Jenkins Functions**: [Shared library](https://github.com/NipurJain4/Jenkins_shared_liberary.git) with reusable pipeline code  
+- **Kubernetes Deployment**: [Helm chart](https://github.com/NipurJain4/DevOps-Task-Swayatt-helm_chart.git) for K8s deployment
 
-## 📊 Monitoring
+## Monitoring
 
-- Jenkins build logs and status
-- ArgoCD application health and sync status  
-- Kubernetes pod logs: `kubectl logs -f deployment/swayatt-logo-server`
-- AWS ECR repository for image versions
+- Jenkins shows build status and logs
+- ArgoCD shows deployment health
+- Check pod logs: `kubectl logs -f deployment/swayatt-logo-server`
 
-## What is this app?
+## What I Learned
 
-This is a lightweight Node.js application built with Express.js that serves a single logo image (`logoswayatt.png`) when accessed through a web browser. When you visit the root URL, the server responds by displaying the Swayatt logo.
+This project helped me understand:
+- How to structure a proper CI/CD pipeline
+- Jenkins shared libraries for code reuse
+- GitOps with ArgoCD
+- Infrastructure as Code with Terraform
+- Container orchestration with Kubernetes
+
+The trickiest part was getting the Jenkins shared library to work properly with ECR authentication, but once that was sorted, everything flows smoothly.
+
+---
+
+Built for the Swayatt DevOps assignment. The goal was to show end-to-end automation from code commit to production deployment.
