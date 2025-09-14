@@ -67,12 +67,11 @@ spec:
     namespace: default
 ```
 
-## 🧪 Testing
+## 🧪 Running the Application
 
 ```bash
-# Run tests locally
+# Install dependencies
 npm install
-npm test
 
 # Run application
 npm start
@@ -86,7 +85,6 @@ npm start
 ├── package.json        # Dependencies and scripts
 ├── Dockerfile          # Container definition
 ├── Jenkinsfile         # CI/CD pipeline
-├── test/               # Unit tests
 ├── docs/               # Documentation and diagrams
 ├── deployment-proof/   # Deployment screenshots
 └── WRITEUP.md         # Technical implementation details
