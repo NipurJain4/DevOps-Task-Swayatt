@@ -85,6 +85,7 @@ npm start
 ├── package.json        # Dependencies and scripts
 ├── Dockerfile          # Container definition
 ├── Jenkinsfile         # CI/CD pipeline
+├── terraform/          # Infrastructure as Code
 ├── docs/               # Documentation and diagrams
 ├── deployment-proof/   # Deployment screenshots
 └── WRITEUP.md         # Technical implementation details
