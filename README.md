@@ -9,7 +9,7 @@ A complete CI/CD pipeline implementation for a Node.js application using Jenkins
 ```
 GitHub → Jenkins → AWS ECR → ArgoCD → Kubernetes
    ↓        ↓         ↓        ↓         ↓
-Webhook  Build/Test  Push   GitOps   Deploy
+Webhook  Build/Push  Push   GitOps   Deploy
 ```
 
 ## 🛠️ Tech Stack
