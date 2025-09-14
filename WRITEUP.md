@@ -34,9 +34,11 @@ GitHub → Jenkins → AWS ECR → ArgoCD → Kubernetes Cluster
 **Solution**: Used AWS credentials in Jenkins and ECR login function in shared library
 
 ## Possible Improvements
-1. **Security**: Add vulnerability scanning with Trivy or Snyk
-2. **Testing**: Implement comprehensive test coverage and integration tests
-3. **Monitoring**: Add Prometheus and Grafana for application monitoring
-4. **Multi-environment**: Separate dev/staging/prod environments with different namespaces
-5. **Infrastructure as Code**: Add Terraform for AWS infrastructure provisioning
-6. **Notifications**: Add Slack/email notifications for pipeline status
+1. **Infrastructure as Code**: ✅ **IMPLEMENTED** - Complete Terraform setup available at [DevOps-Task-Swayatt-terraform](https://github.com/NipurJain4/DevOps-Task-Swayatt-terraform.git)
+   - Automated EKS cluster creation (~$213/month)
+   - Jenkins EC2 with pre-installed tools
+   - ECR repository and IAM roles
+2. **Security**: Add vulnerability scanning with Trivy
+3. **Testing**: Implement comprehensive test coverage
+4. **Monitoring**: Add Prometheus and Grafana
+5. **Multi-environment**: Separate dev/staging/prod environments

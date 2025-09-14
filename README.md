@@ -12,6 +12,39 @@ GitHub → Jenkins → AWS ECR → ArgoCD → Kubernetes
 Webhook  Build/Push  Push   GitOps   Deploy
 ```
 
+## ☁️ Infrastructure Options
+
+### Current Setup (Cost-Effective)
+- **Existing Infrastructure**: Uses pre-configured Jenkins server and Kubernetes cluster
+- **Monthly Cost**: ~$0 (using existing resources)
+
+### Production Setup with Terraform (Recommended)
+For a complete production environment, use our Terraform infrastructure:
+
+**🏗️ Infrastructure Components:**
+- **Jenkins Master**: EC2 t3.medium instance with pre-installed tools
+- **EKS Cluster**: Managed Kubernetes with 2 worker nodes
+- **ECR Repository**: Private container registry
+- **VPC & Networking**: Custom VPC with public/private subnets
+- **IAM Roles**: Proper permissions for Jenkins-EKS integration
+
+**💰 Cost Breakdown:**
+- EKS Cluster: ~$73/month
+- EC2 Jenkins (t3.medium): ~$30/month  
+- Worker Nodes (t3.medium x2): ~$60/month
+- NAT Gateway: ~$45/month
+- ECR Storage: ~$5/month
+- **Total Estimated Cost**: ~$213/month
+
+**🚀 Quick Deploy:**
+```bash
+git clone https://github.com/NipurJain4/DevOps-Task-Swayatt-terraform.git
+cd DevOps-Task-Swayatt-terraform
+terraform init && terraform apply
+```
+
+This will create a complete production-ready DevOps infrastructure in AWS.
+
 ## 🛠️ Tech Stack
 
 - **Application**: Node.js + Express
@@ -37,6 +70,8 @@ Webhook  Build/Push  Push   GitOps   Deploy
 - Kubernetes cluster with ArgoCD
 - AWS ECR repository
 - GitHub repository with webhook
+
+**💡 For EKS Setup:** Use our [Terraform repository](https://github.com/NipurJain4/DevOps-Task-Swayatt-terraform.git) to create complete AWS infrastructure including Jenkins EC2, EKS cluster, and ECR repository.
 
 ### 1. Jenkins Configuration
 ```bash
@@ -93,8 +128,12 @@ npm start
 
 ## 🔗 Related Repositories
 
-- **Shared Library**: [Jenkins_shared_liberary](https://github.com/NipurJain4/Jenkins_shared_liberary.git)
-- **Helm Chart**: [DevOps-Task-Swayatt-helm_chart](https://github.com/NipurJain4/DevOps-Task-Swayatt-helm_chart.git)
+- **🏗️ Infrastructure (Terraform)**: [DevOps-Task-Swayatt-terraform](https://github.com/NipurJain4/DevOps-Task-Swayatt-terraform.git)
+  - Complete AWS infrastructure setup (EKS + ECR + Jenkins EC2)
+  - One-command deployment with Terraform
+  - Production-ready with proper IAM roles and networking
+- **📚 Shared Library**: [Jenkins_shared_liberary](https://github.com/NipurJain4/Jenkins_shared_liberary.git)
+- **📦 Helm Chart**: [DevOps-Task-Swayatt-helm_chart](https://github.com/NipurJain4/DevOps-Task-Swayatt-helm_chart.git)
 
 ## 📊 Monitoring
 
