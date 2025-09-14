@@ -39,20 +39,13 @@ pipeline {
                }
             }
         }
-        stage('Deploy on EC2') {
-            steps {
-                script{
-                    EC2_deploy(EC2_USER, EC2_HOST, ECR_URI, AWS_REGION, AWS_ACCOUNT_ID, ECR_REPO_NAME)
-                }
-            }
-        }
     }
     post {
         success {
-            echo "✅ Deployed successfully to EC2 and running on port 3000!"
+            echo "✅ Image is pushed to ECR Successfully"
         }
         failure {
-            echo "❌ Deployment failed. Check Jenkins logs for more details."
+            echo "❌ Image is pushed to ECR failed!."
         }
     }
 }
