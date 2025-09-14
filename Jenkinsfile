@@ -40,6 +40,15 @@ pipeline {
             }
         }
     }
+    stage('Update Helm Chart') {
+            steps {
+                script {
+                    updateHelmChart(
+                        helmRepoUrl: 'https://github.com/NipurJain4/DevOps-Task-Swayatt-helm_chart.git'
+                    )
+                }
+            }
+        }
     post {
         success {
             echo "✅ Image is pushed to ECR Successfully"
