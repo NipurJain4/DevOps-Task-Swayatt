@@ -43,7 +43,7 @@ pipeline {
     stage('Update Helm Chart') {
             steps {
                 script {
-                    updateHelmChart(
+                    helm_deploy(
                         helmRepoUrl: 'https://github.com/NipurJain4/DevOps-Task-Swayatt-helm_chart.git'
                     )
                 }
