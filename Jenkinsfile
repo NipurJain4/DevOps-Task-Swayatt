@@ -4,7 +4,7 @@ pipeline {
     environment {
     AWS_REGION = 'ap-south-1'
     AWS_ACCOUNT_ID = '905302884938'
-    ECR_REPO_NAME = 'sawattaya'
+    ECR_REPO_NAME = 'sawattya'
     ECR_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_NAME}"
     EC2_HOST = "ec2-3-111-245-91.ap-south-1.compute.amazonaws.com"
     EC2_USER = "ubuntu"
